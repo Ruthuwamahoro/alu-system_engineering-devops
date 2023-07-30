@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+apt-get update
+apt-get -y install nginx
+rm -rf /etc/nginx/sites-available/default
+rm -rf /etc/nginx/sites-enabled/default
+echo "Holberton School for the win!" > /var/www/html/index.html
+sed -i '/listen 80 default_server;/a location / { add_header Content-Type "text/plain"; return 200 "Holberton School"; }' /etc/nginx/sites-available/default
+sed -i 's/^\tlocation \/ {$/\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current\/;\n\t}\n\n\tlocation \/ {/' /etc/nginx/sites-available/default
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
