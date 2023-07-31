@@ -1,31 +1,7 @@
 #!/usr/bin/env bash
-#installing nginx web server
-if [[ $(id -u) -ne 0 ]]; then
-  echo "This script must be run with root privileges."
-  exit 1
-fi
-apt-get update
-apt-get -y install nginx 
-rm -f /etc/nginx/sites-available/default
-rm -f /etc/nginx/sites-enabled/default
-echo "Holberton School for the win!" > /var/www/html/index.html
-cat <<EOF > /etc/nginx/sites-available/holberton
-server {
-    listen 80 default_server;
-    root /var/www/html;
-
-    location / {
-        add_header Content-Type "text/plain";
-        return 200 "Holberton School";
-    }
-}
-EOF
-ln -sf /etc/nginx/sites-available/holberton /etc/nginx/sites-enabled/
-
-service nginx restart
-
-if [[ $(curl -sI 127.0.0.1 | grep "HTTP/1.1 200 OK") ]]; then
-  echo "Nginx is installed and accepting traffic on port 80."
-else
-  echo "Something went wrong. Nginx might not be running or not accepting traffic on port 80."
-fi
+#install nginx web server
+sudo apt update
+sudo apt install nginx -y
+sudo touch /var/www/html/index.html
+echo "Holberton School" | sudo tee /var/www/html/index.html
+sudo service nginx restart
