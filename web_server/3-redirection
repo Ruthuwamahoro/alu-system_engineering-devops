@@ -4,5 +4,20 @@ sudo apt-get -y update
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
 echo "Holberton School" | sudo tee /var/www/html/index.nginx-debian.html
-sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://onepiece.fandom.com/wiki/One_Piece_Wiki permanent;" /etc/nginx/sites-enabled/default
+sudo bash -c 'cat << EOF > /etc/nginx/sites-available/redirect_me
+server {
+    listen 80;
+
+    server_name _;
+
+    location /redirect_me {
+        return 301 https://onepiece.fandom.com/wiki/One_Piece_Wiki;
+    }
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF'
+sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
 sudo service nginx restart
