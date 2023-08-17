@@ -1,6 +1,6 @@
-# puppet code to fix 'wp-setting.php'
-
-exec { '/var/www/html/wp-setting.php':
-  path    => [ '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' ],
-  command => "sed -i 's/.phpp/.php/g' /var/www/html/wp-settings.php",
+# It allows you to simulate HTTP requests to a web server
+# and check the response.
+exec { 'replace_limit':
+  path    => '/usr/bin:/usr/sbin:/bin',
+  command => 'sed -i "/ULIMIT=/c\ULIMIT=\'-n 4096\'" /etc/default/nginx; service nginx restart',
 }
