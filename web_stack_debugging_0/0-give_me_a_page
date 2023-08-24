@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# apache run on container and return page
+# run apache on designated container
 
 echo "ServerName localhost" >> /etc/apache2.conf
 service apache2 start
